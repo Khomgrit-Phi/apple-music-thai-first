@@ -3,7 +3,6 @@
    --color-* / --font-* aliases kept for backwards compat with existing CSS modules */
 
 /* ── Web fonts ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* Sukhumvit Set — bundled brand font */
 @font-face { font-family: "Sukhumvit Set"; src: url("/fonts/SukhumvitSet-Thin.ttf") format("truetype"); font-weight: 100; font-style: normal; font-display: swap; }
@@ -57,9 +56,9 @@
   --am-frost-bar-bg:      rgba(245, 245, 247, 0.88);
 
   /* ── Type families ── */
-  --am-font-display: "SF Pro Display", Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --am-font-text:    "SF Pro Text",    Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --am-font-thai:    "Sukhumvit Set", "Thonburi", system-ui, sans-serif;
+  --am-font-display: "Sukhumvit Set", "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --am-font-text:    "Sukhumvit Set", "SF Pro Text",    system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --am-font-thai:    "Sukhumvit Set", system-ui, sans-serif;
 
   /* ── Type scale ── */
   --am-display-size:   32px; --am-display-weight:   600; --am-display-lh:   1.25; --am-display-ls:   -0.20px;
