@@ -89,10 +89,10 @@ export const GENRE_FAMILIES = [
 
 export const ARTIST_ART = {
   bodyslam: '/assets/artwork/album-03.jpg',
-  tilly:    '/assets/artwork/album-04.jpg',
+  tilly:    '/assets/artwork/artist-tilly.jpg',
   phum:     '/assets/artwork/album-04.jpg',
-  bowky:    '/assets/artwork/album-11.jpg',
-  ink:      '/assets/artwork/album-08.jpg',
+  bowky:    '/assets/artwork/artist-bowky.jpg',
+  ink:      '/assets/artwork/artist-ink.jpg',
   threeman: '/assets/artwork/album-08.jpg',
   polycat:  '/assets/artwork/album-06.jpg',
   cocktail: '/assets/artwork/album-10.jpg',
