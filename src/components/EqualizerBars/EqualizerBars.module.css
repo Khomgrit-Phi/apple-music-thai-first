@@ -1,0 +1,19 @@
+.container {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.bar {
+  display: block;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--bar-color, #FFFFFF);
+  animation: eq-bar 0.8s ease infinite alternate;
+  animation-delay: var(--bar-delay, 0s);
+}
+
+.bar:nth-child(1) { height: 8px; }
+.bar:nth-child(2) { height: 14px; }
+.bar:nth-child(3) { height: 6px; }

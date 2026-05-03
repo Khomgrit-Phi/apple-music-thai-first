@@ -1,0 +1,23 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  animation: pulse-dot 1.2s ease infinite;
+  flex-shrink: 0;
+}
+
+.label {
+  font-family: var(--font-thai);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--color-primary);
+}

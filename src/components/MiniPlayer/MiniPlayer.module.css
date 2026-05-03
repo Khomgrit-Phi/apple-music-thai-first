@@ -1,0 +1,118 @@
+.player {
+  position: fixed;
+  bottom: calc(var(--music-tab-bar-h) + 8px);
+  left: 8px;
+  right: 8px;
+  z-index: 100;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: rgba(245, 245, 247, 0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.inner {
+  height: var(--music-mini-player-h);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0 var(--space-xs);
+  cursor: pointer;
+}
+
+.artwork {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--color-canvas-parchment);
+}
+
+.artImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.artPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2A2A2C 0%, #3A3A3C 100%);
+}
+
+.text {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-thai);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.52;
+  letter-spacing: 0;
+  color: var(--color-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artist {
+  font-family: var(--font-thai);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.52;
+  letter-spacing: 0;
+  color: var(--color-body-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.playBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--motion-fast) var(--motion-ease-spring);
+}
+
+.skipBtn {
+  width: 22px;
+  height: 22px;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Progress bar ── */
+.progressTrack {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-hairline);
+  border-radius: 1px;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 1px;
+  transition: width 0.5s linear;
+}

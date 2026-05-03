@@ -1,0 +1,71 @@
+.app {
+  max-width: 390px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  background-color: var(--color-canvas);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  margin-bottom: 0;
+}
+
+.chartList {
+  padding: 0 var(--space-md);
+}
+
+/* ── Token showcase ── */
+.tokenGrid {
+  padding: 0 var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.tokenRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.tokenLabel {
+  font-family: var(--font-latin);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-ink-muted-48);
+  min-width: 80px;
+}
+
+.swatchRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-xxs);
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.swatchColor {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 0.5px solid var(--color-hairline);
+}
+
+.swatchName {
+  font-family: var(--font-latin);
+  font-size: 10px;
+  color: var(--color-ink-muted-48);
+  text-align: center;
+}

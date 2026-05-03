@@ -1,0 +1,26 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: 44px;
+  background-color: var(--color-surface-black);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-md);
+}
+
+.title {
+  font-family: var(--font-latin);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.12px;
+  color: #FFFFFF;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}

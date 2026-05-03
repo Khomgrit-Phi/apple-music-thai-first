@@ -1,0 +1,45 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  height: var(--music-tab-bar-h);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding: 8px 0 0;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-top: 0.5px solid var(--color-hairline);
+}
+
+.item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0 16px;
+  color: var(--color-ink-muted-48);
+  transition: color var(--motion-fast) var(--motion-ease-default);
+}
+
+.item.active {
+  color: var(--color-primary);
+}
+
+.icon {
+  display: flex;
+  width: 28px;
+  height: 28px;
+}
+
+.label {
+  font-family: var(--font-thai);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  margin-top: 3px;
+}

@@ -1,0 +1,36 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-thai);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  background-color: var(--color-canvas-parchment);
+  color: var(--color-ink);
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-default),
+    color            var(--motion-fast) var(--motion-ease-default);
+}
+
+.pill.active {
+  background-color: var(--color-ink);
+  color: #FFFFFF;
+}
+
+.row {
+  padding: 0 var(--space-md);
+  overflow: hidden;
+}
+
+.scroll {
+  display: flex;
+  gap: var(--space-xs);
+  overflow-x: auto;
+  scroll-padding-left: var(--space-md);
+  padding-bottom: 2px;
+}

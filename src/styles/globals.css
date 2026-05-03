@@ -1,0 +1,403 @@
+/* Apple Music Thai-First — Design System Tokens & Global Styles
+   Token prefix: --am-*  (canonical)
+   --color-* / --font-* aliases kept for backwards compat with existing CSS modules */
+
+/* ── Web fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Sukhumvit Set — bundled brand font */
+@font-face { font-family: "Sukhumvit Set"; src: url("/fonts/SukhumvitSet-Thin.ttf") format("truetype"); font-weight: 100; font-style: normal; font-display: swap; }
+@font-face { font-family: "Sukhumvit Set"; src: url("/fonts/SukhumvitSet-Light.ttf") format("truetype"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Sukhumvit Set"; src: url("/fonts/SukhumvitSet-Text.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Sukhumvit Set"; src: url("/fonts/SukhumvitSet-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Sukhumvit Set"; src: url("/fonts/SukhumvitSet-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Sukhumvit Set"; src: url("/fonts/SukhumvitSet-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
+
+:root {
+  /* ── Accent (Apple Music Red) ── */
+  --am-primary:           #FA233B;
+  --am-primary-focus:     #FF375F;
+  --am-primary-on-dark:   #FF6B81;
+  --am-on-primary:        #FFFFFF;
+
+  /* ── Ink (text) ── */
+  --am-ink:               #1D1D1F;
+  --am-body:              #1D1D1F;
+  --am-body-on-dark:      #FFFFFF;
+  --am-body-muted:        rgba(0, 0, 0, 0.55);
+  --am-ink-muted-80:      #333333;
+  --am-ink-muted-48:      #7A7A7A;
+
+  /* ── Canvas (light surfaces) ── */
+  --am-canvas:            #FFFFFF;
+  --am-canvas-parchment:  #F5F5F7;
+  --am-surface-pearl:     #FAFAFC;
+  --am-surface-overlay:   rgba(255, 255, 255, 0.90);
+
+  /* ── Dark tile surfaces ── */
+  --am-surface-tile-1:    #272729;
+  --am-surface-tile-2:    #2A2A2C;
+  --am-surface-tile-3:    #252527;
+  --am-surface-black:     #000000;
+  --am-surface-chip:      rgba(210, 210, 215, 0.64);
+
+  /* ── Borders & dividers ── */
+  --am-divider-soft:      #F0F0F0;
+  --am-hairline:          #E0E0E0;
+
+  /* ── Semantic ── */
+  --am-success:           #30D158;
+  --am-warning:           #FF9F0A;
+  --am-danger:            #FF453A;
+  --am-info:              #0A84FF;
+
+  /* ── Frosted surfaces ── */
+  --am-mini-bg:           rgba(245, 245, 247, 0.92);
+  --am-tab-bg:            rgba(255, 255, 255, 0.92);
+  --am-frost-bar-bg:      rgba(245, 245, 247, 0.88);
+
+  /* ── Type families ── */
+  --am-font-display: "SF Pro Display", Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --am-font-text:    "SF Pro Text",    Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --am-font-thai:    "Sukhumvit Set", "Thonburi", system-ui, sans-serif;
+
+  /* ── Type scale ── */
+  --am-display-size:   32px; --am-display-weight:   600; --am-display-lh:   1.25; --am-display-ls:   -0.20px;
+  --am-section-size:   20px; --am-section-weight:   600; --am-section-lh:   1.30; --am-section-ls:   0;
+  --am-body-strong-size: 17px; --am-body-strong-weight: 600; --am-body-strong-lh: 1.47; --am-body-strong-ls: -0.374px;
+  --am-body-size:      16px; --am-body-weight:      400; --am-body-lh:      1.45; --am-body-ls:      -0.374px;
+  --am-caption-size:   14px; --am-caption-weight:   400; --am-caption-lh:   1.45; --am-caption-ls:   -0.224px;
+  --am-label-size:     12px; --am-label-weight:     500; --am-label-lh:     1.0;  --am-label-ls:     0.3px;
+  --am-nav-size:       12px; --am-nav-weight:       400; --am-nav-lh:       1.0;  --am-nav-ls:       -0.12px;
+
+  /* ── Thai line-height adjustments ── */
+  --am-thai-lh-mult:    1.05;
+  --am-thai-body-lh:    1.52;   /* 1.45 × 1.05 */
+  --am-thai-caption-lh: 1.52;
+  --am-thai-section-lh: 1.37;   /* 1.30 × 1.05 */
+  --am-thai-display-lh: 1.32;   /* 1.25 × 1.05 */
+  --am-thai-max-lines:  2;
+
+  /* ── Spacing ── */
+  --am-space-xxs:  4px;
+  --am-space-xs:   8px;
+  --am-space-sm:   12px;
+  --am-space-md:   16px;
+  --am-space-lg:   24px;
+  --am-space-xl:   32px;
+  --am-space-xxl:  48px;
+  --am-image-to-title: 8px;
+  --am-title-to-meta:  4px;
+  --am-card-internal:  8px;
+  --am-mini-player-h:  64px;
+  --am-tab-bar-h:      76px;
+  --am-now-playing-art: 280px;
+
+  /* ── iOS 26 Liquid Glass ── */
+  --am-glass-dark-bg:         rgba(30, 30, 32, 0.75);
+  --am-glass-dark-filter:     saturate(200%) blur(24px);
+  --am-glass-dark-border:     rgba(255, 255, 255, 0.14);
+  --am-glass-light-bg:        rgba(255, 255, 255, 0.72);
+  --am-glass-light-filter:    saturate(200%) blur(24px);
+  --am-glass-light-border:    rgba(255, 255, 255, 0.55);
+  --am-glass-red-tint-bg:     rgba(250, 35, 59, 0.12);
+  --am-glass-red-tint-border: rgba(250, 35, 59, 0.25);
+
+  --am-glass-text-primary:    #FFFFFF;
+  --am-glass-text-secondary:  rgba(255, 255, 255, 0.55);
+  --am-glass-text-tertiary:   rgba(255, 255, 255, 0.40);
+  --am-glass-icon-active:     #FF375F;
+  --am-glass-icon-muted:      rgba(255, 255, 255, 0.45);
+
+  --am-radius-glass-bar:      22px;
+  --am-radius-glass-card:     24px;
+  --am-radius-glass-chip:     16px;
+
+  --am-shadow-glass-float:    0 8px 32px rgba(0, 0, 0, 0.45);
+  --am-shadow-glass-panel:    0 4px 24px rgba(0, 0, 0, 0.50);
+
+  --am-dur-glass-expand:      250ms;
+  --am-ease-glass-expand:     cubic-bezier(0.32, 0.72, 0, 1);
+  --am-dur-glass-shrink:      200ms;
+  --am-ease-glass-shrink:     cubic-bezier(0.32, 0, 0.67, 0);
+  --am-dur-glass-panel:       400ms;
+
+  --am-tab-bar-expanded-h:    68px;
+  --am-tab-bar-shrunk-h:      52px;
+
+  /* ── Radii ── */
+  --am-radius-none: 0px;
+  --am-radius-xs:   5px;
+  --am-radius-sm:   8px;
+  --am-radius-md:   12px;
+  --am-radius-lg:   16px;
+  --am-radius-xl:   20px;
+  --am-radius-pill: 9999px;
+  --am-radius-full: 9999px;
+
+  /* ── Elevation ── */
+  --am-shadow-none:         none;
+  --am-shadow-soft:         0 0 0 0.5px rgba(0, 0, 0, 0.08);
+  --am-shadow-product:      rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+  --am-shadow-mini-lift:    0 4px 20px rgba(0, 0, 0, 0.15);
+  --am-frost-blur:          saturate(180%) blur(20px);
+
+  /* ── Motion ── */
+  --am-dur-fast:    150ms;
+  --am-dur-normal:  300ms;
+  --am-dur-slow:    500ms;
+  --am-ease:        ease-out;
+  --am-ease-enter:  cubic-bezier(0.32, 0.72, 0, 1);
+  --am-ease-exit:   cubic-bezier(0.32, 0, 0.67, 0);
+  --am-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Legacy aliases (existing CSS Modules use --color-* / --font-* / etc.) ── */
+  --color-primary:          var(--am-primary);
+  --color-primary-focus:    var(--am-primary-focus);
+  --color-primary-on-dark:  var(--am-primary-on-dark);
+  --color-on-primary:       var(--am-on-primary);
+  --color-ink:              var(--am-ink);
+  --color-body-muted:       var(--am-body-muted);
+  --color-ink-muted-80:     var(--am-ink-muted-80);
+  --color-ink-muted-48:     var(--am-ink-muted-48);
+  --color-body-on-dark:     var(--am-body-on-dark);
+  --color-canvas:           var(--am-canvas);
+  --color-canvas-parchment: var(--am-canvas-parchment);
+  --color-surface-pearl:    var(--am-surface-pearl);
+  --color-surface-tile-1:   var(--am-surface-tile-1);
+  --color-surface-tile-2:   var(--am-surface-tile-2);
+  --color-surface-tile-3:   var(--am-surface-tile-3);
+  --color-surface-black:    var(--am-surface-black);
+  --color-divider-soft:     var(--am-divider-soft);
+  --color-hairline:         var(--am-hairline);
+  --color-success:          var(--am-success);
+  --color-warning:          var(--am-warning);
+  --color-danger:           var(--am-danger);
+  --font-latin:             var(--am-font-text);
+  --font-thai:              var(--am-font-thai);
+  --radius-none: var(--am-radius-none);
+  --radius-xs:   var(--am-radius-xs);
+  --radius-sm:   var(--am-radius-sm);
+  --radius-md:   var(--am-radius-md);
+  --radius-lg:   var(--am-radius-lg);
+  --radius-xl:   var(--am-radius-xl);
+  --radius-pill: var(--am-radius-pill);
+  --radius-full: var(--am-radius-full);
+  --motion-fast:         var(--am-dur-fast);
+  --motion-normal:       var(--am-dur-normal);
+  --motion-slow:         var(--am-dur-slow);
+  --motion-ease-default: var(--am-ease);
+  --motion-ease-enter:   var(--am-ease-enter);
+  --motion-ease-exit:    var(--am-ease-exit);
+  --motion-ease-spring:  var(--am-ease-spring);
+  --space-xxs:   var(--am-space-xxs);
+  --space-xs:    var(--am-space-xs);
+  --space-sm:    var(--am-space-sm);
+  --space-md:    var(--am-space-md);
+  --space-lg:    var(--am-space-lg);
+  --space-xl:    var(--am-space-xl);
+  --space-xxl:   var(--am-space-xxl);
+  --space-image-to-title: var(--am-image-to-title);
+  --space-title-to-meta:  var(--am-title-to-meta);
+  --music-mini-player-h:  var(--am-mini-player-h);
+  --music-tab-bar-h:      var(--am-tab-bar-h);
+  --music-album-card:     148px;
+  --music-now-playing-art: var(--am-now-playing-art);
+}
+
+/* ── Dark mode overrides ── */
+[data-theme="dark"] {
+  --am-ink:              #FFFFFF;
+  --am-body:             #FFFFFF;
+  --am-body-muted:       rgba(255, 255, 255, 0.55);
+  --am-canvas:           #000000;
+  --am-canvas-parchment: #1C1C1E;
+  --am-divider-soft:     #2C2C2E;
+  --am-hairline:         #3A3A3C;
+  --am-primary:          #FF375F;
+  --am-mini-bg:          rgba(40, 40, 42, 0.92);
+  --am-tab-bg:           rgba(20, 20, 22, 0.85);
+  --am-frost-bar-bg:     rgba(28, 28, 30, 0.90);
+  /* Re-sync legacy aliases */
+  --color-primary:          var(--am-primary);
+  --color-ink:              var(--am-ink);
+  --color-body-muted:       var(--am-body-muted);
+  --color-canvas:           var(--am-canvas);
+  --color-canvas-parchment: var(--am-canvas-parchment);
+  --color-divider-soft:     var(--am-divider-soft);
+  --color-hairline:         var(--am-hairline);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+body { font-family: var(--am-font-text); background-color: var(--am-canvas); color: var(--am-ink); font-size: var(--am-body-size); line-height: var(--am-body-lh); letter-spacing: var(--am-body-ls); }
+img { display: block; max-width: 100%; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+/* ── Type utility classes (match prototype's .am-* classes) ── */
+.am-display { font-family: var(--am-font-display); font-size: var(--am-display-size); font-weight: var(--am-display-weight); line-height: var(--am-display-lh); letter-spacing: var(--am-display-ls); }
+.am-section  { font-family: var(--am-font-display); font-size: var(--am-section-size);  font-weight: var(--am-section-weight);  line-height: var(--am-section-lh);  letter-spacing: var(--am-section-ls); }
+.am-body     { font-family: var(--am-font-text);    font-size: var(--am-body-size);     font-weight: var(--am-body-weight);     line-height: var(--am-body-lh);     letter-spacing: var(--am-body-ls); }
+.am-caption  { font-family: var(--am-font-text);    font-size: var(--am-caption-size);  font-weight: var(--am-caption-weight);  line-height: var(--am-caption-lh);  letter-spacing: var(--am-caption-ls); color: var(--am-body-muted); }
+.am-label    { font-family: var(--am-font-text);    font-size: var(--am-label-size);    font-weight: var(--am-label-weight);    line-height: var(--am-label-lh);    letter-spacing: var(--am-label-ls); }
+
+/* Thai modifier — zero letter-spacing, Sukhumvit Set, Thai line-height */
+.am-thai, [lang="th"] {
+  font-family: var(--am-font-thai);
+  letter-spacing: 0 !important;
+  line-height: var(--am-thai-body-lh);
+}
+.am-thai.am-section { line-height: var(--am-thai-section-lh); }
+.am-thai.am-display { line-height: var(--am-thai-display-lh); }
+
+/* Legacy .th-text alias */
+.th-text { font-family: var(--am-font-thai); letter-spacing: 0 !important; line-height: var(--am-thai-body-lh); }
+
+/* ── Truncation utilities ── */
+.am-truncate-2, .truncate-2 {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.am-truncate-1, .truncate-1 {
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── Interaction utilities ── */
+.am-press-card, .card-press {
+  transition: transform var(--am-dur-fast) var(--am-ease);
+}
+.am-press-card:active, .card-press:active { transform: scale(0.98); }
+.am-press-button, .btn-press {
+  transition: transform var(--am-dur-fast) var(--am-ease);
+}
+.am-press-button:active, .btn-press:active { transform: scale(0.95); }
+
+/* ── Scrollbar hide ── */
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+*::-webkit-scrollbar { display: none; }
+
+/* ── Animations ── */
+@keyframes amPulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes amEq { to { height: 4px } }
+@keyframes eq-bar { to { height: 4px } }
+@keyframes amSheetIn { from { transform: translateY(100%) } to { transform: translateY(0) } }
+@keyframes amSheetOut { from { transform: translateY(0) } to { transform: translateY(100%) } }
+@keyframes amScroll { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes amFadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes amScale { from { transform: scale(0.92); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+
+/* ── Scroll reveal utility ── */
+.am-scroll-reveal {
+  animation: amScroll var(--am-dur-slow) var(--am-ease-enter) both;
+}
+.am-scroll-reveal:nth-child(2) { animation-delay: 60ms; }
+.am-scroll-reveal:nth-child(3) { animation-delay: 120ms; }
+.am-scroll-reveal:nth-child(4) { animation-delay: 180ms; }
+.am-scroll-reveal:nth-child(5) { animation-delay: 240ms; }
+
+/* ── Loading states ── */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.am-loading {
+  background: linear-gradient(90deg, var(--am-canvas-parchment) 25%, var(--am-surface-pearl) 50%, var(--am-canvas-parchment) 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ── Empty state utilities ── */
+.am-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--am-space-lg);
+  padding: var(--am-space-xl);
+  color: var(--am-body-muted);
+  text-align: center;
+}
+.am-empty-icon {
+  font-size: 48px;
+  opacity: 0.4;
+}
+.am-empty-text {
+  font-size: var(--am-body-size);
+  line-height: var(--am-body-lh);
+}
+
+/* ── iOS 26 Liquid Glass surfaces ── */
+.glass-dark {
+  background: var(--am-glass-dark-bg);
+  backdrop-filter: var(--am-glass-dark-filter);
+  -webkit-backdrop-filter: var(--am-glass-dark-filter);
+  border: 0.5px solid var(--am-glass-dark-border);
+  box-shadow:
+    var(--am-shadow-glass-float),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -0.5px 0 rgba(0, 0, 0, 0.30);
+}
+.glass-light {
+  background: var(--am-glass-light-bg);
+  backdrop-filter: var(--am-glass-light-filter);
+  -webkit-backdrop-filter: var(--am-glass-light-filter);
+  border: 0.5px solid var(--am-glass-light-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-dark {
+    background: rgba(28, 28, 30, 1.0);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass-light {
+    background: rgba(255, 255, 255, 1.0);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@keyframes panel-detach {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive breakpoints ── */
+@media (min-width: 768px) {
+  :root {
+    --am-display-size: 36px;
+    --am-section-size: 22px;
+  }
+
+  .am-col-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--am-space-lg);
+  }
+
+  .am-hide-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --am-display-size: 40px;
+  }
+
+  .am-col-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--am-space-lg);
+  }
+
+  .am-col-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--am-space-lg);
+  }
+}
