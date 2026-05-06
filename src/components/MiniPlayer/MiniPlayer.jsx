@@ -51,7 +51,7 @@ function MiniPlayer({
         width: 'min(calc(100% - 16px), 366px)',
         bottom: 84,
         height: 60,
-        borderRadius: 18,
+        borderRadius: 20,
         background: 'rgba(112, 112, 112, 0.1)',
         backdropFilter: 'saturate(200%) blur(12px)',
         WebkitBackdropFilter: 'saturate(200%) blur(12px)',
@@ -67,7 +67,14 @@ function MiniPlayer({
       {useFluidGlass && (
         <Suspense fallback={null}>
           <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', opacity: 0.6 }}>
-            <FluidGlass mode="bar" barProps={{ navItems: [] }} />
+            <FluidGlass 
+              mode="bar" 
+              barProps={{ 
+                navItems: [],
+                thickness: 12, // Slightly thicker for the MiniPlayer
+                ior: 1.12
+              }} 
+            />
           </div>
         </Suspense>
       )}

@@ -95,7 +95,9 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
             <FluidGlass 
               mode="bar"
               barProps={{
-                navItems: [] // Suppress 3D labels to avoid overlap with HTML buttons
+                navItems: [], // Suppress 3D labels to avoid overlap with HTML buttons
+                thickness: 10,
+                ior: 1.15
               }}
             />
           </div>

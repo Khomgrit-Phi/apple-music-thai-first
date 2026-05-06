@@ -78,22 +78,21 @@ const ModeWrapper = memo(function ModeWrapper({
 
     const destX = followPointer ? (pointer.x * v.width) / 2 : 0;
     const destY = lockToBottom ? -v.height / 2 + 0.2 : followPointer ? (pointer.y * v.height) / 2 : 0;
-    if (ref.current) {
-      easing.damp3(ref.current.position, [destX, destY, 15], 0.15, delta);
+    
+    if (!ref.current) return;
+    easing.damp3(ref.current.position, [destX, destY, 15], 0.15, delta);
 
-      if (modeProps.scale == null) {
-        const maxWorld = v.width * 0.9;
-        const desired = maxWorld / geoWidthRef.current;
-        ref.current.scale.setScalar(Math.min(0.15, desired));
-      }
+    if (modeProps.scale == null) {
+      const maxWorld = v.width * 0.9;
+      const desired = maxWorld / geoWidthRef.current;
+      ref.current.scale.setScalar(Math.min(0.15, desired));
     }
 
     gl.setRenderTarget(buffer);
     gl.render(scene, camera);
     gl.setRenderTarget(null);
 
-    // Background Color
-    // gl.setClearColor(0x5227ff, 1);
+    // Background Color - Transparent for overlay usage
     gl.setClearAlpha(0);
   });
 
@@ -129,10 +128,6 @@ function Cube({ modeProps, ...p }) {
 }
 
 function Bar({ modeProps = {}, ...p }) {
-  // Ensure the GLB path is correct. 
-  // If bar.glb is in public/assets/3d/bar.glb, this path is correct.
-  const glbPath = '/assets/3d/bar.glb';
-  
   const defaultMat = {
     transmission: 1,
     roughness: 0,
@@ -145,7 +140,7 @@ function Bar({ modeProps = {}, ...p }) {
 
   return (
     <ModeWrapper
-      glb={glbPath}
+      glb="/assets/3d/bar.glb"
       geometryKey="Cube"
       lockToBottom
       followPointer={false}
