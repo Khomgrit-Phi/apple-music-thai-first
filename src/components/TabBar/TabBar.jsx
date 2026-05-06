@@ -1,11 +1,14 @@
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import { lazy, Suspense } from 'react'
 import Icon from '../Icon/Icon.jsx'
 import { COPY } from '../../data.js'
 import { useScrollCollapse } from '../../hooks/useScrollCollapse.js'
 
+const FluidGlass = lazy(() => import('../FluidGlass/index.js'))
+
 const SPRING = { type: 'spring', stiffness: 400, damping: 30 }
 
-export default function TabBar({ active = 'listen', onChange, lang = 'th', dark = false }) {
+export default function TabBar({ active = 'listen', onChange, lang = 'th', dark = false, useFluidGlass = false }) {
   const collapsed = useScrollCollapse('main-scroll')
   const t = COPY[lang]
   const isThai = lang !== 'en'
@@ -18,16 +21,147 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
     { id: 'search',  icon: 'search',     iconInactive: 'search',  label: t.search },
   ]
 
-  const glassBg     = dark ? 'rgba(30,30,32,0.75)' : 'rgba(255,255,255,0.72)'
-  const glassFilter = 'saturate(200%) blur(24px)'
+  // FluidGlass bar mode navigation items
+  const navItems = items.map(it => ({
+    label: it.label,
+    link: `#${it.id}`
+  }))
+
+  // If using FluidGlass mode, render it with custom overlay
+  if (useFluidGlass) {
+    return (
+      <Suspense fallback={<div style={{ position: 'fixed', bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 'min(calc(100% - 24px), 366px)', height: '68px', borderRadius: 22, zIndex: 200, background: dark ? 'rgba(30,30,32,0.72)' : 'rgba(255,255,255,0.68)' }} />}>
+        <motion.div
+          role="tablist"
+          aria-label="Main navigation"
+          animate={{ height: collapsed ? 52 : 68 }}
+          transition={SPRING}
+          style={{
+            position: 'fixed',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 'min(calc(100% - 24px), 366px)',
+            bottom: 8,
+            borderRadius: 22,
+            zIndex: 200,
+            overflow: 'hidden',
+            height: collapsed ? 52 : 68,
+          }}
+        >
+          {/* FluidGlass background in bar mode */}
+          <div style={{ position: 'absolute', inset: 0 }}>
+            <FluidGlass 
+              mode="bar"
+              barProps={{
+                navItems: navItems
+              }}
+            />
+          </div>
+
+          {/* Interactive tab buttons overlay */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 4px',
+            pointerEvents: 'auto',
+          }}>
+            <LayoutGroup>
+              {items.map((it) => {
+                const isActive = active === it.id
+
+                return (
+                  <motion.button
+                    key={it.id}
+                    layout
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-label={it.label}
+                    onClick={() => onChange?.(it.id)}
+                    whileTap={{ scale: 0.97 }}
+                    transition={SPRING}
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: collapsed ? 44 : 56,
+                      borderRadius: 16,
+                      background: 'transparent',
+                      border: '0.5px solid transparent',
+                      color: isActive ? '#FF375F' : 'rgba(255,255,255,0.65)',
+                      cursor: 'pointer',
+                      padding: 0,
+                      gap: 3,
+                      position: 'relative',
+                    }}
+                  >
+                    <Icon
+                      name={isActive ? it.icon : it.iconInactive}
+                      size={22}
+                      style={{
+                        opacity: isActive ? 1 : 0.85,
+                        transform: isActive ? 'scale(1.04)' : 'scale(1)',
+                        transition: 'all 0.2s ease',
+                      }}
+                    />
+
+                    <AnimatePresence>
+                      {!collapsed && (
+                        <motion.span
+                          key="label"
+                          aria-hidden="true"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 14 }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.18 }}
+                          style={{
+                            fontSize: 10,
+                            letterSpacing: isActive ? '-0.01em' : '0',
+                            fontWeight: isActive ? 600 : 500,
+                            fontFamily: isThai
+                              ? 'var(--am-font-thai)'
+                              : 'var(--am-font-text)',
+                            color: isActive ? '#FF375F' : 'rgba(255,255,255,0.65)',
+                            overflow: 'hidden',
+                            lineHeight: 1,
+                            display: 'block',
+                          }}
+                        >
+                          {it.label}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.button>
+                )
+              })}
+            </LayoutGroup>
+          </div>
+        </motion.div>
+      </Suspense>
+    )
+  }
+
+  /* 🔥 improved glass (no layout impact) */
+  const glassBg = dark
+    ? 'rgba(30,30,32,0.72)'
+    : 'rgba(255,255,255,0.68)'
+
+  const glassFilter = 'blur(26px) saturate(180%) brightness(1.08)'
+
   const glassBorder = dark
     ? '0.5px solid rgba(255,255,255,0.14)'
     : '0.5px solid rgba(255,255,255,0.55)'
+
   const glassShadow = dark
-    ? '0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -0.5px 0 rgba(0,0,0,0.30)'
-    : '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)'
+    ? '0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12)'
+    : '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.85)'
+
   const inactiveColor = dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)'
 
+  // Standard glass effect (non-FluidGlass mode)
   return (
     <motion.div
       role="tablist"
@@ -42,21 +176,30 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
         width: 'min(calc(100% - 24px), 366px)',
         bottom: 8,
         borderRadius: 22,
+
         background: glassBg,
         backdropFilter: glassFilter,
         WebkitBackdropFilter: glassFilter,
+
         border: glassBorder,
         boxShadow: glassShadow,
+
         display: 'flex',
         alignItems: 'center',
         padding: '0 4px',
         zIndex: 200,
         overflow: 'hidden',
+
+        /* subtle micro-noise */
+        backgroundImage:
+          'radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)',
+        backgroundSize: '3px 3px',
       }}
     >
       <LayoutGroup>
         {items.map((it) => {
           const isActive = active === it.id
+
           return (
             <motion.button
               key={it.id}
@@ -65,7 +208,7 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
               aria-selected={isActive}
               aria-label={it.label}
               onClick={() => onChange?.(it.id)}
-              whileTap={{ scale: 0.92 }}
+              whileTap={{ scale: 0.97 }} /* 🔥 fixed */
               transition={SPRING}
               style={{
                 flex: 1,
@@ -75,15 +218,45 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
                 justifyContent: 'center',
                 height: collapsed ? 44 : 56,
                 borderRadius: 16,
-                background: isActive ? 'rgba(250,35,59,0.12)' : 'transparent',
-                border: isActive ? '0.5px solid rgba(250,35,59,0.25)' : '0.5px solid transparent',
+
+                /* ❌ removed fake red bg */
+                background: 'transparent',
+                border: '0.5px solid transparent',
+
                 color: isActive ? '#FF375F' : inactiveColor,
                 cursor: 'pointer',
                 padding: 0,
                 gap: 3,
+                position: 'relative',
               }}
             >
-              <Icon name={isActive ? it.icon : it.iconInactive} size={22} />
+              {/* 🔥 subtle native highlight (no layout impact) */}
+              {isActive && (
+                <motion.div
+                  layoutId="active-pill"
+                  transition={SPRING}
+                  style={{
+                    position: 'absolute',
+                    inset: 6,
+                    borderRadius: 12,
+                    background: dark
+                      ? 'rgba(255,255,255,0.06)'
+                      : 'rgba(0,0,0,0.04)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
+
+              <Icon
+                name={isActive ? it.icon : it.iconInactive}
+                size={22}
+                style={{
+                  opacity: isActive ? 1 : 0.85,
+                  transform: isActive ? 'scale(1.04)' : 'scale(1)',
+                  transition: 'all 0.2s ease',
+                }}
+              />
+
               <AnimatePresence>
                 {!collapsed && (
                   <motion.span
@@ -95,9 +268,11 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
                     transition={{ duration: 0.18 }}
                     style={{
                       fontSize: 10,
-                      letterSpacing: 0,
+                      letterSpacing: isActive ? '-0.01em' : '0',
                       fontWeight: isActive ? 600 : 500,
-                      fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)',
+                      fontFamily: isThai
+                        ? 'var(--am-font-thai)'
+                        : 'var(--am-font-text)',
                       color: isActive ? '#FF375F' : inactiveColor,
                       overflow: 'hidden',
                       lineHeight: 1,
