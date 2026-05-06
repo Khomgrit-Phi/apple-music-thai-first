@@ -184,6 +184,8 @@ function AppContent() {
         progress={progress}
         onToggle={toggle}
         onOpen={() => setShowNowPlaying(true)}
+        onSkip={skip}
+        onPrev={prev}
         lang={lang}
         dark={dark}
       />

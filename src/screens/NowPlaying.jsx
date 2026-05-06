@@ -1,9 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import Icon from '../components/Icon/Icon.jsx'
 import StatusBar from '../components/StatusBar/StatusBar.jsx'
 import { COPY, SAMPLE_LYRICS_TH, SAMPLE_LYRICS_EN } from '../data.js'
 
 const fmt = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
+
+function useDominantColor(src) {
+  const [color, setColor] = useState('#0a0a0c')
+  useEffect(() => {
+    if (!src) return
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas')
+        canvas.width = 8
+        canvas.height = 8
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, 8, 8)
+        const d = ctx.getImageData(0, 0, 8, 8).data
+        let r = 0, g = 0, b = 0
+        for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i+1]; b += d[i+2] }
+        const px = d.length / 4
+        r = Math.round(r / px * 0.5)
+        g = Math.round(g / px * 0.5)
+        b = Math.round(b / px * 0.5)
+        setColor(`rgb(${r},${g},${b})`)
+      } catch { setColor('#0a0a0c') }
+    }
+    img.onerror = () => setColor('#0a0a0c')
+    img.src = src
+  }, [src])
+  return color
+}
 
 // ── Classic (iOS 26) ─────────────────────────────────────────────────────
 export function NowPlayingClassic({ track, playing, progress, onClose, onToggle, onSkip, onPrev, lang }) {
@@ -13,12 +43,13 @@ export function NowPlayingClassic({ track, playing, progress, onClose, onToggle,
   const artist = isThai ? track.artist.nameTh : track.artist.name
   const cur    = Math.floor(progress * track.duration)
   const dur    = track.duration
-  const [pulse, setPulse] = useState(false)
-  const handleToggle = () => { setPulse(true); setTimeout(() => setPulse(false), 200); onToggle?.() }
+  const bgColor = useDominantColor(track.art)
 
   return (
     <div style={{
-      position: 'absolute', inset: 0, background: '#0a0a0c', zIndex: 300,
+      position: 'absolute', inset: 0,
+      background: `linear-gradient(180deg, ${bgColor} 0%, #080810 55%)`,
+      zIndex: 300,
       display: 'flex', flexDirection: 'column', overflowY: 'auto',
       animation: 'amSheetIn 320ms cubic-bezier(0.32,0.72,0,1)',
     }}>
@@ -29,7 +60,7 @@ export function NowPlayingClassic({ track, playing, progress, onClose, onToggle,
         <button onClick={onClose} style={{ width: 36, height: 5, borderRadius: 9999, background: 'rgba(255,255,255,0.3)', border: 0, padding: 0, cursor: 'pointer' }}/>
       </div>
 
-      {/* Artwork zone */}
+      {/* Artwork */}
       <div style={{ padding: '8px 24px 12px', display: 'flex', justifyContent: 'center' }}>
         <div style={{
           width: '100%', maxWidth: 360, aspectRatio: '1 / 1',
@@ -64,7 +95,7 @@ export function NowPlayingClassic({ track, playing, progress, onClose, onToggle,
               display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
             }}>{title}</div>
             <div style={{
-              fontSize: 16, color: '#FF6B81', fontWeight: 500, letterSpacing: 0, marginTop: 4,
+              fontSize: 14, color: '#FF6B81', fontWeight: 500, letterSpacing: 0, marginTop: 4,
               fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)',
               overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
             }}>{artist}</div>
@@ -79,7 +110,7 @@ export function NowPlayingClassic({ track, playing, progress, onClose, onToggle,
         {/* Scrubber */}
         <div style={{ marginBottom: 20 }}>
           <div style={{ position: 'relative', height: 4, background: 'rgba(255,255,255,0.15)', borderRadius: 2 }}>
-            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${progress * 100}%`, background: '#FF375F', borderRadius: 2 }}/>
+            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${progress * 100}%`, background: '#FFFFFF', borderRadius: 2 }}/>
             <div style={{
               position: 'absolute', top: '50%', transform: 'translate(-50%, -50%)',
               left: `${progress * 100}%`,
@@ -88,7 +119,7 @@ export function NowPlayingClassic({ track, playing, progress, onClose, onToggle,
               pointerEvents: 'none',
             }}/>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 12, color: 'rgba(255,255,255,0.40)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>
             <span>{fmt(cur)}</span>
             <span>-{fmt(dur - cur)}</span>
           </div>
@@ -96,21 +127,31 @@ export function NowPlayingClassic({ track, playing, progress, onClose, onToggle,
 
         {/* Playback controls */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-          <button onClick={onPrev} style={{ width: 48, height: 48, color: 'rgba(255,255,255,0.80)', background: 'transparent', border: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <motion.button
+            whileTap={{ scale: 0.88 }}
+            onClick={onPrev}
+            style={{ width: 48, height: 48, color: 'rgba(255,255,255,0.80)', background: 'transparent', border: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
             <Icon name="backward.fill" size={28}/>
-          </button>
-          <button onClick={handleToggle} style={{
-            width: 56, height: 56, borderRadius: 9999, background: 'none', border: 0,
-            color: '#FFFFFF', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transform: pulse ? 'scale(1.08)' : 'scale(1)',
-            transition: 'transform 150ms cubic-bezier(0.34,1.56,0.64,1)',
-          }}>
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.92 }}
+            onClick={onToggle}
+            style={{
+              width: 56, height: 56, borderRadius: 9999, background: 'none', border: 0,
+              color: '#FFFFFF', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
             <Icon name={playing ? 'pause.fill' : 'play.fill'} size={40}/>
-          </button>
-          <button onClick={onSkip} style={{ width: 48, height: 48, color: 'rgba(255,255,255,0.80)', background: 'transparent', border: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.88 }}
+            onClick={onSkip}
+            style={{ width: 48, height: 48, color: 'rgba(255,255,255,0.80)', background: 'transparent', border: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
             <Icon name="forward.fill" size={28}/>
-          </button>
+          </motion.button>
         </div>
 
         {/* Volume */}
@@ -124,10 +165,10 @@ export function NowPlayingClassic({ track, playing, progress, onClose, onToggle,
 
         {/* Extra actions */}
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px' }}>
-          <button style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'rgba(255,255,255,0.50)' }}><Icon name="shuffle" size={18}/></button>
-          <button style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'rgba(255,255,255,0.50)' }}><Icon name="airplay" size={18}/></button>
-          <button onClick={() => window.__openQueue && window.__openQueue()} style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'rgba(255,255,255,0.50)' }}><Icon name="queue" size={18}/></button>
-          <button style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'rgba(255,255,255,0.50)' }}><Icon name="repeat" size={18}/></button>
+          <button style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'rgba(255,255,255,0.50)' }}><Icon name="shuffle" size={24}/></button>
+          <button style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'rgba(255,255,255,0.50)' }}><Icon name="airplay" size={24}/></button>
+          <button onClick={() => window.__openQueue && window.__openQueue()} style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'rgba(255,255,255,0.50)' }}><Icon name="queue" size={24}/></button>
+          <button style={{ background: 'transparent', border: 0, cursor: 'pointer', color: 'rgba(255,255,255,0.50)' }}><Icon name="repeat" size={24}/></button>
         </div>
       </div>
     </div>
@@ -161,7 +202,7 @@ export function NowPlayingLyrics({ track, playing, progress, onClose, onToggle, 
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 20px' }}>
           <div style={{ width: 56, height: 56, borderRadius: 8, overflow: 'hidden' }}>
-            <img src={track.art} alt={title} style={{ width: '100%', height: '100%', display: 'block' }}/>
+            <img src={track.art} alt={title} style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}/>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{
@@ -184,15 +225,28 @@ export function NowPlayingLyrics({ track, playing, progress, onClose, onToggle, 
         </div>
         <div style={{ flex: 1, padding: '12px 24px 0', overflowY: 'auto' }}>
           {lyrics.map((line, i) => (
-            <div key={i} style={{
-              fontSize: 26, fontWeight: 700, lineHeight: 1.5, letterSpacing: 0,
-              color: i === activeIdx ? '#fff' : 'rgba(255,255,255,0.28)',
-              transform: i === activeIdx ? 'scale(1.02)' : 'scale(1)',
-              transformOrigin: 'left',
-              transition: 'all 400ms cubic-bezier(0.32,0.72,0,1)',
-              marginBottom: 18,
-              fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)',
-            }}>{line}</div>
+            <div key={i} style={{ marginBottom: 18 }}>
+              <div style={{
+                fontSize: i === activeIdx ? 30 : (i < activeIdx ? 24 : 24),
+                fontWeight: 700,
+                lineHeight: 1.5,
+                letterSpacing: 0,
+                color: i === activeIdx ? 'rgba(255,255,255,1.0)' : (i < activeIdx ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.30)'),
+                transform: i === activeIdx ? 'scale(1.02)' : 'scale(1)',
+                transformOrigin: 'left',
+                transition: 'all 400ms cubic-bezier(0.32,0.72,0,1)',
+                fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)',
+              }}>{line}</div>
+              {i === activeIdx && (
+                <div style={{
+                  fontSize: 16, fontWeight: 400, color: 'rgba(255,255,255,0.55)',
+                  fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)',
+                  marginTop: 4,
+                }}>
+                  {isThai ? 'The starlight shining down on us' : 'แสงแห่งดาวที่ส่องลงมา'}
+                </div>
+              )}
+            </div>
           ))}
         </div>
         <div style={{ padding: '0 24px 28px' }}>

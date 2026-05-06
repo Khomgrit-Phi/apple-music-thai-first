@@ -69,15 +69,26 @@ export function LyricsFullScreen({ track, playing, progress, onClose, onToggle, 
       </div>
       <div style={{ flex: 1, overflowY: 'auto', padding: '24px 24px 200px' }}>
         {lines.map((ln, i) => (
-          <div key={i} style={{
-            padding: '14px 0',
-            fontSize: i === activeLine ? 28 : 22,
-            fontWeight: i === activeLine ? 700 : 600,
-            color: i === activeLine ? '#fff' : i < activeLine ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.5)',
-            letterSpacing: 0, lineHeight: 1.25,
-            transition: 'all 200ms', filter: i === activeLine ? 'none' : 'blur(0.4px)',
-            fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)',
-          }}>{ln}</div>
+          <div key={i} style={{ padding: '14px 0' }}>
+            <div style={{
+              fontSize: i === activeLine ? 30 : 24,
+              fontWeight: 700,
+              color: i === activeLine ? 'rgba(255,255,255,1.0)' : i < activeLine ? 'rgba(255,255,255,0.30)' : 'rgba(255,255,255,0.30)',
+              letterSpacing: 0, lineHeight: 1.25,
+              transition: 'all 200ms',
+              fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)',
+            }}>{ln}</div>
+            {i === activeLine && (
+              <div style={{
+                fontSize: 16, fontWeight: 400,
+                color: 'rgba(255,255,255,0.55)',
+                fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)',
+                marginTop: 4, lineHeight: 1.4,
+              }}>
+                {isThai ? 'The city sleeps under neon rain' : 'คืนนี้เมืองหลับใต้ฝนนีออน'}
+              </div>
+            )}
+          </div>
         ))}
       </div>
       <div style={{

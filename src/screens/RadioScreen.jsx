@@ -26,9 +26,12 @@ const RADIO_STATIONS = {
 
 function LiveBadge({ lang }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-      <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff', animation: 'pulse 1.5s infinite' }}/>
-      <span style={{ fontSize: 10, fontWeight: 700, color: '#fff', letterSpacing: '0.8px' }}>
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 4,
+      background: '#FA233B', height: 18, borderRadius: 9, padding: '0 7px',
+    }}>
+      <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#fff' }}/>
+      <span style={{ fontSize: 9, fontWeight: 700, color: '#fff', letterSpacing: '0.6px', lineHeight: 1 }}>
         {lang === 'en' ? 'LIVE' : 'สด'}
       </span>
     </div>
@@ -81,24 +84,30 @@ export function RadioScreen({ tracks, lang, dark, onPlay, onOpenAlbum }) {
       </div>
 
       <SectionHeader title={lang === 'en' ? 'Live Stations' : 'สถานีถ่ายทอดสด'} link={t.seeAll} lang={lang} dark={dark} />
-      <div style={{ padding: '0 16px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+      <div style={{ padding: '0 16px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
         {stations.slice(1).map(s => (
           <div key={s.id} onClick={() => onPlay(tracks[1])} style={{
-            position: 'relative', aspectRatio: '1/1', borderRadius: 12, overflow: 'hidden',
+            position: 'relative', height: 58, borderRadius: 10, overflow: 'hidden',
             background: `linear-gradient(135deg, ${s.color} 0%, ${s.color}80 100%)`,
-            padding: 12, color: '#fff', cursor: 'pointer',
+            padding: '8px 10px', color: '#fff', cursor: 'pointer',
             display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
           }}>
-            <div style={{ position: 'absolute', right: -20, bottom: -20, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }}/>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              {s.live && <LiveBadge lang={lang} />}
-            </div>
+            <div style={{ position: 'absolute', right: -10, bottom: -10, width: 50, height: 50, borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }}/>
+            {s.live && <LiveBadge lang={lang} />}
             <div style={{ position: 'relative' }}>
-              <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: 0, lineHeight: 1.15, fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-display)' }}>{s.name}</div>
-              <div style={{ marginTop: 4, fontSize: 11, opacity: 0.85, letterSpacing: 0, fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-text)' }}>{s.tag}</div>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 0, lineHeight: 1.2, fontFamily: isThai ? 'var(--am-font-thai)' : 'var(--am-font-display)', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{s.name}</div>
             </div>
           </div>
         ))}
+        {/* ♫ Music Radio badge card */}
+        <div style={{
+          position: 'relative', height: 58, borderRadius: 10, overflow: 'hidden',
+          background: 'linear-gradient(135deg, #5B2D8E 0%, #3B1F6A 100%)',
+          padding: '8px 10px', color: '#fff', cursor: 'pointer',
+          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+        }}>
+          <div style={{ position: 'absolute', left: 8, bottom: 6, fontSize: 9, fontWeight: 700, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.4px' }}>♫ Music Radio</div>
+        </div>
       </div>
 
       <SectionHeader title={lang === 'en' ? 'Hosted Shows' : 'รายการดีเจ'} link={t.seeAll} lang={lang} dark={dark} />
