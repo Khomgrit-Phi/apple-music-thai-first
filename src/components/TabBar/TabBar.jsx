@@ -36,9 +36,10 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
       animate={{ height: collapsed ? 52 : 68 }}
       transition={SPRING}
       style={{
-        position: 'absolute',
-        left: 12,
-        right: 12,
+        position: 'fixed',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: 'min(calc(100% - 24px), 366px)',
         bottom: 8,
         borderRadius: 22,
         background: glassBg,

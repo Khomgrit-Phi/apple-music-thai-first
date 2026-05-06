@@ -39,10 +39,12 @@ function MiniPlayer({
           onOpen()
         }
       }}
+      className="mini-player"
       style={{
-        position: 'absolute',
-        left: 8,
-        right: 8,
+        position: 'fixed',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: 'min(calc(100% - 16px), 374px)',
         bottom: 84,
         height: 56,
         borderRadius: 20,

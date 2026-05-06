@@ -56,9 +56,9 @@
   --am-frost-bar-bg:      rgba(245, 245, 247, 0.88);
 
   /* ── Type families ── */
-  --am-font-display: "Sukhumvit Set", "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --am-font-text:    "Sukhumvit Set", "SF Pro Text",    system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --am-font-thai:    "Sukhumvit Set", system-ui, sans-serif;
+  --am-font-display: "Sukhumvit Set", "Inter", "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --am-font-text:    "Sukhumvit Set", "Inter", "SF Pro Text",    system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --am-font-thai:    "Sukhumvit Set", "Inter", system-ui, sans-serif;
 
   /* ── Type scale ── */
   --am-display-size:   32px; --am-display-weight:   600; --am-display-lh:   1.25; --am-display-ls:   -0.20px;
@@ -230,7 +230,7 @@
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
-body { font-family: var(--am-font-text); background-color: var(--am-canvas); color: var(--am-ink); font-size: var(--am-body-size); line-height: var(--am-body-lh); letter-spacing: var(--am-body-ls); }
+body { font-family: var(--am-font-text); background-color: #000000; color: var(--am-ink); font-size: var(--am-body-size); line-height: var(--am-body-lh); letter-spacing: var(--am-body-ls); }
 img { display: block; max-width: 100%; }
 button { cursor: pointer; border: none; background: none; font-family: inherit; }
 
