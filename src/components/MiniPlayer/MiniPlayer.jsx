@@ -1,6 +1,9 @@
+import { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { useSwipeable } from 'react-swipeable'
 import Icon from '../Icon/Icon.jsx'
+
+const FluidGlass = lazy(() => import('../FluidGlass'))
 
 function MiniPlayer({
   track,
@@ -11,6 +14,7 @@ function MiniPlayer({
   onPrev,
   progress = 0,
   lang = 'th',
+  useFluidGlass = false,
 }) {
   if (!track) return null
 
@@ -44,24 +48,40 @@ function MiniPlayer({
         position: 'fixed',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: 'min(calc(100% - 16px), 374px)',
+        width: 'min(calc(100% - 16px), 366px)',
         bottom: 84,
-        height: 56,
-        borderRadius: 20,
-        background: 'rgba(30,30,32,0.75)',
-        backdropFilter: 'saturate(200%) blur(24px)',
-        WebkitBackdropFilter: 'saturate(200%) blur(24px)',
+        height: 60,
+        borderRadius: 18,
+        background: 'rgba(112, 112, 112, 0.1)',
+        backdropFilter: 'saturate(200%) blur(12px)',
+        WebkitBackdropFilter: 'saturate(200%) blur(12px)',
         border: '0.5px solid rgba(255,255,255,0.14)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -0.5px 0 rgba(0,0,0,0.30)',
+        overflow: 'hidden',
+        zIndex: 150,
+        cursor: 'pointer',
+        backgroundImage: 'radial-gradient(rgba(206, 156, 156, 0.04) 1px, transparent 1px)',
+        backgroundSize: '3px 3px',
+      }}
+    >
+      {useFluidGlass && (
+        <Suspense fallback={null}>
+          <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', opacity: 0.6 }}>
+            <FluidGlass mode="bar" barProps={{ navItems: [] }} />
+          </div>
+        </Suspense>
+      )}
+
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
         display: 'flex',
         alignItems: 'center',
         padding: '0 12px',
         gap: 10,
-        overflow: 'hidden',
-        zIndex: 150,
-        cursor: 'pointer',
-      }}
-    >
+        height: '100%',
+        width: '100%',
+      }}>
       <div
         style={{
           width: 40,
@@ -148,6 +168,8 @@ function MiniPlayer({
         <Icon name="forward.fill" size={18} />
       </motion.button>
 
+      </div>
+
       {/* Progress bar */}
       <div style={{
         position: 'absolute',
@@ -157,6 +179,7 @@ function MiniPlayer({
         height: 2,
         background: 'rgba(255,255,255,0.10)',
         borderRadius: '0 0 20px 20px',
+        zIndex: 2,
       }}>
         <div style={{
           height: '100%',

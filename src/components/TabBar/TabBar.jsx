@@ -4,7 +4,7 @@ import Icon from '../Icon/Icon.jsx'
 import { COPY } from '../../data.js'
 import { useScrollCollapse } from '../../hooks/useScrollCollapse.js'
 
-const FluidGlass = lazy(() => import('../FluidGlass/index.js'))
+const FluidGlass = lazy(() => import('../FluidGlass'))
 
 const SPRING = { type: 'spring', stiffness: 400, damping: 30 }
 
@@ -21,6 +21,23 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
     { id: 'search',  icon: 'search',     iconInactive: 'search',  label: t.search },
   ]
 
+  /* 🔥 styles used in both modes */
+  const glassBg = dark
+    ? 'rgba(30,30,32,0.1)'
+    : 'rgba(255,255,255,0.1)'
+
+  const glassFilter = 'blur(12px) saturate(200%) brightness(1.08)'
+
+  const glassBorder = dark
+    ? '0.5px solid rgba(255,255,255,0.14)'
+    : '0.5px solid rgba(255,255,255,0.55)'
+
+  const glassShadow = dark
+    ? '0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12)'
+    : '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.85)'
+
+  const inactiveColor = dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)'
+
   // FluidGlass bar mode navigation items
   const navItems = items.map(it => ({
     label: it.label,
@@ -29,11 +46,28 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
 
   // If using FluidGlass mode, render it with custom overlay
   if (useFluidGlass) {
+    const fallbackStyle = {
+      position: 'fixed',
+      bottom: 8,
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: 'min(calc(100% - 24px), 366px)',
+      height: '68px',
+      borderRadius: 22,
+      zIndex: 200,
+      background: glassBg,
+      backdropFilter: glassFilter,
+      WebkitBackdropFilter: glassFilter,
+      border: glassBorder,
+      boxShadow: glassShadow,
+    }
+
     return (
-      <Suspense fallback={<div style={{ position: 'fixed', bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 'min(calc(100% - 24px), 366px)', height: '68px', borderRadius: 22, zIndex: 200, background: dark ? 'rgba(30,30,32,0.72)' : 'rgba(255,255,255,0.68)' }} />}>
+      <Suspense fallback={<div style={fallbackStyle} />}>
         <motion.div
           role="tablist"
           aria-label="Main navigation"
+          layout
           animate={{ height: collapsed ? 52 : 68 }}
           transition={SPRING}
           style={{
@@ -46,14 +80,22 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
             zIndex: 200,
             overflow: 'hidden',
             height: collapsed ? 52 : 68,
+            background: glassBg,
+            backdropFilter: glassFilter,
+            WebkitBackdropFilter: glassFilter,
+            border: glassBorder,
+            boxShadow: glassShadow,
+            backgroundImage:
+              'radial-gradient(rgba(206, 156, 156, 0.04) 1px, transparent 1px)',
+            backgroundSize: '3px 3px',
           }}
         >
           {/* FluidGlass background in bar mode */}
-          <div style={{ position: 'absolute', inset: 0 }}>
+          <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', opacity: 0.8 }}>
             <FluidGlass 
               mode="bar"
               barProps={{
-                navItems: navItems
+                navItems: [] // Suppress 3D labels to avoid overlap with HTML buttons
               }}
             />
           </div>
@@ -66,6 +108,7 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
             alignItems: 'center',
             padding: '0 4px',
             pointerEvents: 'auto',
+            zIndex: 1,
           }}>
             <LayoutGroup>
               {items.map((it) => {
@@ -91,13 +134,30 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
                       borderRadius: 16,
                       background: 'transparent',
                       border: '0.5px solid transparent',
-                      color: isActive ? '#FF375F' : 'rgba(255,255,255,0.65)',
+                      color: isActive ? '#FF375F' : inactiveColor,
                       cursor: 'pointer',
                       padding: 0,
                       gap: 3,
                       position: 'relative',
                     }}
                   >
+                    {/* subtle native highlight */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="active-pill"
+                        transition={SPRING}
+                        style={{
+                          position: 'absolute',
+                          inset: 6,
+                          borderRadius: 12,
+                          background: dark
+                            ? 'rgba(255,255,255,0.06)'
+                            : 'rgba(0,0,0,0.04)',
+                          pointerEvents: 'none',
+                        }}
+                      />
+                    )}
+
                     <Icon
                       name={isActive ? it.icon : it.iconInactive}
                       size={22}
@@ -124,7 +184,7 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
                             fontFamily: isThai
                               ? 'var(--am-font-thai)'
                               : 'var(--am-font-text)',
-                            color: isActive ? '#FF375F' : 'rgba(255,255,255,0.65)',
+                            color: isActive ? '#FF375F' : inactiveColor,
                             overflow: 'hidden',
                             lineHeight: 1,
                             display: 'block',
@@ -143,23 +203,6 @@ export default function TabBar({ active = 'listen', onChange, lang = 'th', dark 
       </Suspense>
     )
   }
-
-  /* 🔥 improved glass (no layout impact) */
-  const glassBg = dark
-    ? 'rgba(30,30,32,0.72)'
-    : 'rgba(255,255,255,0.68)'
-
-  const glassFilter = 'blur(26px) saturate(180%) brightness(1.08)'
-
-  const glassBorder = dark
-    ? '0.5px solid rgba(255,255,255,0.14)'
-    : '0.5px solid rgba(255,255,255,0.55)'
-
-  const glassShadow = dark
-    ? '0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12)'
-    : '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.85)'
-
-  const inactiveColor = dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)'
 
   // Standard glass effect (non-FluidGlass mode)
   return (

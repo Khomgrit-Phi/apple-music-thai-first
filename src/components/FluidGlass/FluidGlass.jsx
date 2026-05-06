@@ -31,14 +31,18 @@ export default function FluidGlass({ mode = 'lens', lensProps = {}, barProps = {
   return (
     <Canvas camera={{ position: [0, 0, 20], fov: 15 }} gl={{ alpha: true }}>
       <ScrollControls damping={0.2} pages={3} distance={0.4}>
-        {mode === 'bar' && <NavItems items={navItems} />}
+        {mode === 'bar' && navItems.length > 0 && <NavItems items={navItems} />}
         <Wrapper modeProps={modeProps}>
-          <Scroll>
-            <Typography />
-            <Images />
-          </Scroll>
-          <Scroll html />
-          <Preload />
+          {mode !== 'bar' && (
+            <>
+              <Scroll>
+                <Typography />
+                <Images />
+              </Scroll>
+              <Scroll html />
+              <Preload />
+            </>
+          )}
         </Wrapper>
       </ScrollControls>
     </Canvas>
@@ -62,7 +66,8 @@ const ModeWrapper = memo(function ModeWrapper({
   const geoWidthRef = useRef(1);
 
   useEffect(() => {
-    const geo = nodes[geometryKey]?.geometry;
+    const geo = nodes?.[geometryKey]?.geometry;
+    if (!geo) return;
     geo.computeBoundingBox();
     geoWidthRef.current = geo.boundingBox.max.x - geo.boundingBox.min.x || 1;
   }, [nodes, geometryKey]);
@@ -73,12 +78,14 @@ const ModeWrapper = memo(function ModeWrapper({
 
     const destX = followPointer ? (pointer.x * v.width) / 2 : 0;
     const destY = lockToBottom ? -v.height / 2 + 0.2 : followPointer ? (pointer.y * v.height) / 2 : 0;
-    easing.damp3(ref.current.position, [destX, destY, 15], 0.15, delta);
+    if (ref.current) {
+      easing.damp3(ref.current.position, [destX, destY, 15], 0.15, delta);
 
-    if (modeProps.scale == null) {
-      const maxWorld = v.width * 0.9;
-      const desired = maxWorld / geoWidthRef.current;
-      ref.current.scale.setScalar(Math.min(0.15, desired));
+      if (modeProps.scale == null) {
+        const maxWorld = v.width * 0.9;
+        const desired = maxWorld / geoWidthRef.current;
+        ref.current.scale.setScalar(Math.min(0.15, desired));
+      }
     }
 
     gl.setRenderTarget(buffer);
@@ -86,7 +93,8 @@ const ModeWrapper = memo(function ModeWrapper({
     gl.setRenderTarget(null);
 
     // Background Color
-    gl.setClearColor(0x5227ff, 1);
+    // gl.setClearColor(0x5227ff, 1);
+    gl.setClearAlpha(0);
   });
 
   const { scale, ior, thickness, anisotropy, chromaticAberration, ...extraMat } = modeProps;
@@ -98,7 +106,7 @@ const ModeWrapper = memo(function ModeWrapper({
         <planeGeometry />
         <meshBasicMaterial map={buffer.texture} transparent />
       </mesh>
-      <mesh ref={ref} scale={scale ?? 0.15} rotation-x={Math.PI / 2} geometry={nodes[geometryKey]?.geometry} {...props}>
+      <mesh ref={ref} scale={scale ?? 0.15} rotation-x={Math.PI / 2} geometry={nodes?.[geometryKey]?.geometry} {...props}>
         <MeshTransmissionMaterial
           buffer={buffer.texture}
           ior={ior ?? 1.15}
@@ -121,6 +129,10 @@ function Cube({ modeProps, ...p }) {
 }
 
 function Bar({ modeProps = {}, ...p }) {
+  // Ensure the GLB path is correct. 
+  // If bar.glb is in public/assets/3d/bar.glb, this path is correct.
+  const glbPath = '/assets/3d/bar.glb';
+  
   const defaultMat = {
     transmission: 1,
     roughness: 0,
@@ -133,7 +145,7 @@ function Bar({ modeProps = {}, ...p }) {
 
   return (
     <ModeWrapper
-      glb="/assets/3d/bar.glb"
+      glb={glbPath}
       geometryKey="Cube"
       lockToBottom
       followPointer={false}
