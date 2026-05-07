@@ -56,8 +56,8 @@
   --am-frost-bar-bg:      rgba(245, 245, 247, 0.88);
 
   /* ── Type families ── */
-  --am-font-display: "Sukhumvit Set", "Inter", "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --am-font-text:    "Sukhumvit Set", "Inter", "SF Pro Text",    system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --am-font-display: "Inter", "Sukhumvit Set", "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --am-font-text:    "Inter", "Sukhumvit Set", "SF Pro Text",    system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --am-font-thai:    "Sukhumvit Set", "Inter", system-ui, sans-serif;
 
   /* ── Type scale ── */
